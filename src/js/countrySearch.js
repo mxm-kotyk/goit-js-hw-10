@@ -14,6 +14,7 @@ const refs = {
 
 refs.countryList.style.cssText =
   'display: flex; flex-direction: column; gap: 10px';
+refs.countryCard.style.cssText = 'display: flex; flex-direction: column;';
 
 refs.searchField.addEventListener(
   'input',
@@ -28,37 +29,20 @@ function handleCountrySearchOnInput(e) {
   }
 
   searchService.fetchCountry(searchQuery).then(data => {
-    console.log(searchQuery, data);
-
     if (data.length > 10) {
-      Notify.failure(
-        'Too many matches found. Please enter a more specific name.'
-      );
+      Notify.info('Too many matches found. Please enter a more specific name.');
       return;
-    } else if (data.length < 10 && data.length > 2) {
-      // insertListMarkup(data);
+    } else if (data.length <= 10 && data.length >= 2) {
       insertMarkup(data, refs.countryList, createListMarkup);
     } else {
-      // insertCardMarkup(data);
       insertMarkup(data, refs.countryCard, createCardMarkup);
     }
   });
 }
 
-// function insertListMarkup(data) {
-//   refs.countryList.innerHTML = '';
-//   const listMarkup = createListMarkup(data);
-//   refs.countryList.insertAdjacentHTML('beforeend', listMarkup);
-// }
-
-// function insertCardMarkup(data) {
-//   refs.countryList.innerHTML = '';
-//   const cardMarkup = createCardMarkup(data);
-//   refs.countryCard.insertAdjacentHTML('beforeend', cardMarkup);
-// }
-
 function insertMarkup(data, element, markupFn) {
   refs.countryList.innerHTML = '';
+  refs.countryCard.innerHTML = '';
   const markup = markupFn(data);
   element.insertAdjacentHTML('beforeend', markup);
 }
