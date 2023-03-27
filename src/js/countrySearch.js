@@ -25,6 +25,7 @@ function handleCountrySearchOnInput(e) {
   const searchQuery = e.target.value.trim();
 
   if (searchQuery === '') {
+    clearMarkup();
     return;
   }
 
@@ -41,8 +42,12 @@ function handleCountrySearchOnInput(e) {
 }
 
 function insertMarkup(data, element, markupFn) {
-  refs.countryList.innerHTML = '';
-  refs.countryCard.innerHTML = '';
+  clearMarkup();
   const markup = markupFn(data);
   element.insertAdjacentHTML('beforeend', markup);
+}
+
+function clearMarkup() {
+  refs.countryList.innerHTML = '';
+  refs.countryCard.innerHTML = '';
 }
