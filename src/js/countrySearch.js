@@ -23,26 +23,34 @@ refs.searchField.addEventListener(
 
 function handleCountrySearchOnInput(e) {
   const searchQuery = e.target.value.trim();
+  clearMarkup();
 
   if (searchQuery === '') {
-    clearMarkup();
     return;
   }
 
-  searchService.fetchCountry(searchQuery).then(data => {
-    if (data.length > 10) {
-      Notify.info('Too many matches found. Please enter a more specific name.');
-      return;
-    } else if (data.length <= 10 && data.length >= 2) {
-      insertMarkup(data, refs.countryList, createListMarkup);
-    } else {
-      insertMarkup(data, refs.countryCard, createCardMarkup);
-    }
-  });
+  searchService
+    .fetchCountry(searchQuery)
+    .then(data => {
+      if (data.length > 10) {
+        Notify.info(
+          'Too many matches found. Please enter a more specific name.'
+        );
+        return;
+      }
+
+      if (data.length <= 10 && data.length >= 2) {
+        insertMarkup(data, refs.countryList, createListMarkup);
+      }
+
+      if (data.length === 1) {
+        insertMarkup(data, refs.countryCard, createCardMarkup);
+      }
+    })
+    .catch(onFetchError);
 }
 
 function insertMarkup(data, element, markupFn) {
-  clearMarkup();
   const markup = markupFn(data);
   element.insertAdjacentHTML('beforeend', markup);
 }
@@ -50,4 +58,8 @@ function insertMarkup(data, element, markupFn) {
 function clearMarkup() {
   refs.countryList.innerHTML = '';
   refs.countryCard.innerHTML = '';
+}
+
+function onFetchError(err) {
+  Notify.failure('Oops, there is no country with that name');
 }

@@ -1,5 +1,6 @@
 html {
-  background: radial-gradient(#a1f0c8 2px, transparent 2px) 0 0 / 35px 35px;
+  background: radial-gradient(#a1f0c8 2px, transparent 2px) 0 0 / 35px 35px,
+    radial-gradient(#f0b1a1 2px, transparent 2px) 17.5px 17.5px / 35px 35px;
 }
 
 * {
